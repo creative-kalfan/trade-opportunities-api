@@ -3,7 +3,7 @@
 A FastAPI-based backend service that analyzes trade opportunities for key Indian market sectors and generates a structured, human-readable **Markdown report**.  
 The service is designed to be simple to run, easy to test, and safe against misuse.
 
-This project was built as part of a **Python Developer (0–2 Years Experience)** assignment.
+This project was built as part of a **Python Developer (0–2 Years Experience)** technical assignment.
 
 ---
 
@@ -11,11 +11,11 @@ This project was built as part of a **Python Developer (0–2 Years Experience)*
 
 - Sector-based trade opportunity analysis
 - Real-time market/news data collection
-- AI-powered analysis with graceful fallback
+- AI-powered analysis with graceful fallback logic
 - Clean, readable **Markdown reports**
 - Optional **report download** as `.md` file
 - API-key based authentication
-- Rate limiting to prevent abuse
+- In-memory rate limiting to prevent abuse
 - Clear project structure and documentation
 
 ---
@@ -38,165 +38,188 @@ This project was built as part of a **Python Developer (0–2 Years Experience)*
 trade_opportunities_api/
 │
 ├── app/
-│ ├── api/
-│ │ └── analyze.py
-│ ├── services/
-│ │ ├── data_collector.py
-│ │ ├── ai_analyzer.py
-│ │ └── report_generator.py
-│ ├── core/
-│ │ ├── config.py
-│ │ ├── security.py
-│ │ └── rate_limiter.py
-│ ├── utils/
-│ │ ├── validators.py
-│ │ └── logger.py
-│ └── main.py
+│   ├── api/
+│   │   └── analyze.py
+│   ├── services/
+│   │   ├── data_collector.py
+│   │   ├── ai_analyzer.py
+│   │   └── report_generator.py
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── security.py
+│   │   └── rate_limiter.py
+│   ├── utils/
+│   │   ├── validators.py
+│   │   └── logger.py
+│   └── main.py
 │
 ├── .env
 ├── requirements.txt
 └── README.md
-
-
+```
 
 ---
 
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Create and activate virtual environment
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
-#installing dependencies
+### 2️⃣ Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-(Optional) Configure AI key
+### 3️⃣ (Optional) Configure AI key
 
-Create a .env file:
+Create a `.env` file:
 
+```env
 GEMINI_API_KEY=your_api_key_here
+```
 
+The application works even **without** an AI key using fallback analysis.
 
-The application works even without an AI key using fallback analysis.
+---
 
-##▶️ Running the Application
+## ▶️ Running the Application
+
+```bash
 python -m uvicorn app.main:app --port 8001
+```
 
-Server will start at:
+Server starts at:
 
+```
 http://127.0.0.1:8001
+```
 
-Analyze Sector (Protected)
+---
+
+## 🔐 Authentication
+
+All protected endpoints require an API key passed via header:
+
+```
+X-API-Key: demo-key-123
+```
+
+---
+
+## 📊 Analyze Sector
+
+**Endpoint**
+
+```
 GET /analyze/{sector}
+```
 
+**Example**
 
-Example:
-
+```
 GET /analyze/technology
+```
 
+**Response**
 
-Returns:
+- Markdown-formatted trade analysis report
+- Displayed as plain text in the browser
 
-A Markdown-formatted trade analysis report
+---
 
-Displayed as plain text in the browser
+## ⬇️ Download Report as File
 
+Append `?download=true` to download the report.
 
-##⬇️ Download Report as File
-
-You can also download the report as a .md file.
-
+```
 GET /analyze/{sector}?download=true
+```
 
+**Example**
 
-Example:
-
+```
 GET /analyze/technology?download=true
+```
 
+**Result**
 
-Result:
+- Browser downloads a file named `technology_trade_report.md`
 
-Browser downloads a file named:
+---
 
-technology_trade_report.md
-
-
-This allows easy sharing, saving, or further editing of the report.
-
-##📄 Report Structure
+## 📄 Report Structure
 
 Each generated report contains:
 
-1. Market Overview
+1. Market Overview  
+2. Current Trends  
+3. Trade Opportunities  
+4. Risks & Considerations  
 
-2. Current Trends
+---
 
-3. Trade Opportunities
+## 🚦 Rate Limiting
 
-4. Risks & Considerations
+- **60 requests per 5 minutes per IP**
 
-##🚦 Rate Limiting
+Exceeded limit response:
 
-60 requests per 5 minutes per IP
-
-Exceeding the limit returns:
-
+```json
 {
   "detail": "Rate limit exceeded. Try again later."
 }
+```
 
+---
 
+## ❗ Error Handling
 
-##❗ Error Handling
+- Invalid sector → `400 Bad Request`
+- Missing / invalid API key → `401 Unauthorized`
+- Too many requests → `429 Too Many Requests`
+- External data or AI failures are handled gracefully
 
-1.Invalid sector → 400 Bad Request
+---
 
-2.Missing / invalid API key → 401 Unauthorized
+## 🧪 Testing
 
-3.Too many requests → 429 Too Many Requests
+You can test the API using:
 
-4.External data or AI failures are handled gracefully (no crashes)
+- Browser
+- Swagger UI (`/docs`)
+- Postman
+- curl
 
+**curl example**
 
-##🧪 Testing
-
-You can test all endpoints using:
-
-1.Browser
-
-2.Swagger UI (/docs)
-
-3.Postman
-
-4.curl
-
-Example with curl:
-
+```bash
 curl -H "X-API-Key: demo-key-123" \
-     "http://127.0.0.1:8001/analyze/technology?download=true" \
-     -o report.md
+"http://127.0.0.1:8001/analyze/technology?download=true" \
+-o report.md
+```
 
-##📝 Notes
+---
 
-1.No external database is used
+## 📝 Notes
 
-2.Rate limiting and session tracking are in-memory
+- No external database is used
+- Rate limiting and session tracking are in-memory
+- Designed for demo / assignment purposes
+- Clean architecture allows easy extension
 
-3.Designed for demo / assignment purposes
+---
 
-4.Clean architecture for easy extension
-
-##👤 Author
+## 👤 Author
 
 Built as part of a Python Developer technical assignment to demonstrate:
 
-1.Backend API design
-
-2.Error handling
-
-3.Clean architecture
-
-4.Practical problem-solving
-
+- Backend API design
+- Authentication and rate limiting
+- Error handling
+- Clean architecture
+- Practical problem-solving
