@@ -61,7 +61,7 @@ trade_opportunities_api/
 
 ---
 
-## **⚙️ Setup Instructions**
+## ⚙️ Setup Instructions
 
 ### 1️⃣ Create and activate virtual environment
 ```bash
@@ -81,7 +81,7 @@ GEMINI_API_KEY=your_api_key_here
 
 The application works even without an AI key using fallback analysis.
 
-▶️ Running the Application
+##▶️ Running the Application
 python -m uvicorn app.main:app --port 8001
 
 Server will start at:
@@ -104,7 +104,7 @@ A Markdown-formatted trade analysis report
 Displayed as plain text in the browser
 
 
-⬇️ Download Report as File
+##⬇️ Download Report as File
 
 You can also download the report as a .md file.
 
@@ -125,7 +125,7 @@ technology_trade_report.md
 
 This allows easy sharing, saving, or further editing of the report.
 
-📄 Report Structure
+##📄 Report Structure
 
 Each generated report contains:
 
@@ -137,7 +137,7 @@ Each generated report contains:
 
 4. Risks & Considerations
 
-🚦 Rate Limiting
+##🚦 Rate Limiting
 
 60 requests per 5 minutes per IP
 
@@ -149,7 +149,7 @@ Exceeding the limit returns:
 
 
 
-❗ Error Handling
+##❗ Error Handling
 
 1.Invalid sector → 400 Bad Request
 
@@ -160,7 +160,7 @@ Exceeding the limit returns:
 4.External data or AI failures are handled gracefully (no crashes)
 
 
-🧪 Testing
+##🧪 Testing
 
 You can test all endpoints using:
 
@@ -178,7 +178,7 @@ curl -H "X-API-Key: demo-key-123" \
      "http://127.0.0.1:8001/analyze/technology?download=true" \
      -o report.md
 
-📝 Notes
+##📝 Notes
 
 1.No external database is used
 
@@ -188,7 +188,7 @@ curl -H "X-API-Key: demo-key-123" \
 
 4.Clean architecture for easy extension
 
-👤 Author
+##👤 Author
 
 Built as part of a Python Developer technical assignment to demonstrate:
 
@@ -199,3 +199,4 @@ Built as part of a Python Developer technical assignment to demonstrate:
 3.Clean architecture
 
 4.Practical problem-solving
+
